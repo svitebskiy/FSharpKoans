@@ -1,5 +1,6 @@
 ﻿namespace FSharpKoans
 open FSharpKoans.Core
+open System
 
 //---------------------------------------------------------------
 // Apply Your Knowledge!
@@ -60,6 +61,14 @@ module ``about the stock example`` =
 
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
+        let result =
+            stockData
+                |> Seq.skip 1
+                |> Seq.map (fun row -> row.Split(','))
+                |> Seq.map (fun row -> (row.[0], row.[1], row.[4]))
+                |> Seq.map (fun (date, o, c) -> (date, Decimal.Parse(o), Decimal.Parse(c)))
+                |> Seq.map (fun (date, o, c) -> (date, Math.Abs(c - o)))
+                |> Seq.maxBy snd
+                |> fst
         
         AssertEquality "2012-03-13" result
